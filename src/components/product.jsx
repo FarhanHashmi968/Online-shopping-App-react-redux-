@@ -22,12 +22,15 @@ const Product = () => {
     })
   }
   return (
-    <div>
+    <div className='d-flex justify-content-center'>
       <ToastContainer />
       <div className='container'>
         <div className='row'>
           {Products.map((item) => (
-            <div className='container col-md-4 my-5' key={item.id}>
+            <div
+              className='container col-md-4 my-5 d-flex justify-content-center'
+              key={item.id}
+            >
               <div className='card bg-dark' style={{ width: '18rem' }}>
                 <div className='p-3 d-flex justify-content-center align-items-center'>
                   <img
@@ -44,7 +47,7 @@ const Product = () => {
                 <div className='card-body text-light text-center'>
                   <h5 className='card-title'>{item.title}</h5>
                   <p className='card-text'>{item.description}</p>
-                  <button className='btn btn-primary mx-3'>
+                  <button className='btn btn-primary mx-3 my-2'>
                     {item.price} ₹
                   </button>
                   <button

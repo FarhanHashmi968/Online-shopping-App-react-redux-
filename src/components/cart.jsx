@@ -10,7 +10,7 @@ const Cart = () => {
   return (
     <>
       <ToastContainer />
-      <div className='container text-center my-5' style={{ width: '700px' }}>
+      <div className='container text-center my-5 mainCartContainer'>
         {selectedCartItems.items.length == 0 && (
           <>
             <h1>Your Cart is empty....</h1>
@@ -20,7 +20,7 @@ const Cart = () => {
           </>
         )}
       </div>
-      <div className='container text-center my-5' style={{ width: '700px' }}>
+      <div className='container text-center my-5 mainCartContainer'>
         {selectedCartItems.items.map((item) => (
           <div key={item.id} className='container my-5'>
             <div

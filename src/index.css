@@ -10,3 +10,29 @@ body {
   background-color: blue;
   justify-content: space-between;
 }
+
+.mainCartContainer {
+  width: 44rem;
+}
+
+/* Code for responsive design */
+@media screen and (max-width: 768px) {
+  .mainCartContainer {
+    width: 25rem;
+  }
+}
+@media screen and (max-width: 500px) {
+  html {
+    font-size: 80%;
+  }
+}
+@media screen and (max-width: 431px) {
+  html {
+    font-size: 75%;
+  }
+}
+@media screen and (max-width: 380px) {
+  html {
+    font-size: 65%;
+  }
+}
