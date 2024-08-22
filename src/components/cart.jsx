@@ -6,6 +6,7 @@ import 'react-toastify/dist/ReactToastify.css'
 
 const Cart = () => {
   const selectedCartItems = useSelector((state) => state.cart)
+
   const dispatch = useDispatch()
   return (
     <>
@@ -31,7 +32,7 @@ const Cart = () => {
                 <div className='col-md-4'>
                   <div className='p-3'>
                     <img
-                      src={item.imgSrc}
+                      src={item.thumbnail}
                       className='img-fluid rounded-start'
                       alt='...'
                       style={{ borderRadius: '10px' }}
@@ -43,7 +44,7 @@ const Cart = () => {
                     <h5 className='card-title'>{item.title}</h5>
                     <p className='card-text'>{item.description}</p>
                     <button className='btn btn-primary mx-3'>
-                      {item.price} ₹
+                      {item.price} $
                     </button>
                     <button className='btn btn-warning'>Buy Now</button>
                   </div>
