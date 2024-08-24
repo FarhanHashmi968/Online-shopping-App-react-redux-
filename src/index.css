@@ -15,6 +15,18 @@ body {
   width: 44rem;
 }
 
+.productDescriptionContainer {
+  width: 60rem;
+}
+
+.productCard {
+  transition: all 0.4s;
+}
+
+.productCard:hover {
+  scale: 1.02;
+}
+
 /* Code for responsive design */
 @media screen and (max-width: 768px) {
   .mainCartContainer {

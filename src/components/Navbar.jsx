@@ -15,7 +15,9 @@ const Navbar = () => {
         </Link>
         <div className='middle'>
           <button type='button' className='btn btn-warning'>
-            <h5>Cart Items Total Price = {selectedItems.totalPrice} $</h5>
+            <h5>
+              Cart Items Total Price = {selectedItems.totalPrice.toFixed(2)} $
+            </h5>
           </button>
         </div>
         <Link to='/cart' className='right'>

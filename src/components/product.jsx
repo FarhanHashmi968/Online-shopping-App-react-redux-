@@ -4,6 +4,7 @@ import { addtoCart, getData } from '../redux/cartSlice/cartSlice'
 import { ToastContainer, toast, Bounce } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { useEffect } from 'react'
+import { Link } from 'react-router-dom'
 
 const Product = () => {
   const { data, isLoading } = useSelector((state) => state.cart)
@@ -30,6 +31,7 @@ const Product = () => {
     })
   }
 
+  // Spinner loading code when code is fetching data----
   if (isLoading) {
     return (
       <div
@@ -60,25 +62,37 @@ const Product = () => {
         <div className='row'>
           {data.map((item) => (
             <div
-              className='container col-md-4 my-5 d-flex justify-content-center'
+              className='container col-md-4 my-5 d-flex justify-content-center '
               key={item.id}
             >
-              <div className='card bg-dark' style={{ width: '18rem' }}>
-                <div className='p-3 d-flex justify-content-center align-items-center'>
-                  <img
-                    src={item.thumbnail}
-                    className='card-img-top'
-                    alt='...'
-                    style={{
-                      width: '200px',
-                      height: '200px',
-                      borderRadius: '10px',
-                    }}
-                  />
-                </div>
+              <div
+                className='card bg-dark productCard'
+                style={{ width: '18rem' }}
+              >
+                <Link
+                  to={`/productdetail/${item.id}`}
+                  style={{ textDecoration: 'none' }}
+                >
+                  <div className='p-3 d-flex justify-content-center align-items-center'>
+                    <img
+                      src={item.thumbnail}
+                      className='card-img-top'
+                      alt='...'
+                      style={{
+                        width: '200px',
+                        height: '200px',
+                        borderRadius: '10px',
+                      }}
+                    />
+                  </div>
+                </Link>
                 <div className='card-body text-light text-center'>
                   <h5 className='card-title'>{item.title}</h5>
-                  <p className='card-text'>{item.description}</p>
+                  <p className='card-text'>
+                    {item.description.length > 10
+                      ? `${item.description.slice(0, 100)}...`
+                      : item.description}
+                  </p>
                   <button className='btn btn-primary mx-3 my-2'>
                     {item.price} $
                   </button>
