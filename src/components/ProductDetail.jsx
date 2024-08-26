@@ -1,44 +1,59 @@
 import { useParams } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { useEffect, useState } from 'react'
 import CustomerReview from './CustomerReview'
+import { addtoCart, getData } from '../redux/cartSlice/cartSlice'
+import { ToastContainer, toast, Bounce } from 'react-toastify'
 
 const ProductDetail = () => {
+  const [product, setProduct] = useState(null)
+
+  const dispatch = useDispatch()
+  const { data } = useSelector((state) => state.cart)
+
   const { uniqueid } = useParams()
   const idd = parseInt(uniqueid)
 
-  const { data } = useSelector((state) => state.cart)
-  const [product, setProduct] = useState(null)
+  useEffect(() => {
+    if (data.length === 0) {
+      dispatch(getData())
+    }
+  }, [data, dispatch])
 
   useEffect(() => {
-    const productTo = data.find((item) => item.id === idd)
-    setProduct(productTo)
+    if (data.length > 0) {
+      const productTo = data.find((item) => item.id === idd)
+      setProduct(productTo)
+    }
   }, [data, idd])
+
+  const handleAddToCart = (item) => {
+    dispatch(addtoCart(item))
+    toast.success('🦄 Item added to cart!', {
+      position: 'top-right',
+      autoClose: 1000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'dark',
+      transition: Bounce,
+    })
+  }
 
   return (
     <>
-      <div
-        className='container text-center productDescriptionContainer'
-        style={{ border: '1px solid red' }}
-      >
+      <div className='container text-center productDescriptionContainer'>
+        <ToastContainer />
         {product ? (
           <>
             {/* Product Details */}
-            <div
-              key={product.id}
-              className='container my-5'
-              style={{ border: '2px solid purple' }}
-            >
-              <div
-                className='card mb-3 bg-dark text-center text-light'
-                style={{ border: '2px solid yellow' }}
-              >
-                <div className='row g-0' style={{ border: '2px solid blue' }}>
-                  <div
-                    className='col-md-4'
-                    style={{ border: '2px solid cyan' }}
-                  >
-                    <div className='p-0' style={{ border: '2px solid orange' }}>
+            <div key={product.id} className='container my-5'>
+              <div className='card mb-3 bg-dark text-center text-light'>
+                <div className='row g-0'>
+                  <div className='col-md-4'>
+                    <div className='p-0'>
                       <img
                         src={product.thumbnail}
                         className='img-fluid rounded-start'
@@ -46,7 +61,6 @@ const ProductDetail = () => {
                         style={{
                           borderRadius: '10px',
                           height: '25rem',
-                          border: '2px solid cyan',
                         }}
                       />
                     </div>
@@ -60,15 +74,17 @@ const ProductDetail = () => {
                         {product.title}
                       </h2>
                       <p style={{ fontWeight: '700', color: '#0d6efd' }}>
-                        Brand - {product.brand}
+                        {product.brand ? `Brand - ${product.brand}` : ''}
                       </p>
 
                       <p>Discount Offer - {product.discountPercentage}%</p>
                       <p>Rating - {product.rating}</p>
                       <p>
-                        <p>
-                          {product.availabilityStatus} - {product.stock}
-                        </p>
+                        {product.availabilityStatus} - {product.stock}
+                      </p>
+                      <p>{product.shippingInformation}</p>
+                      <p>{product.returnPolicy}</p>
+                      <p>
                         Size -{' '}
                         {`${product.dimensions.width} * ${product.dimensions.height} * ${product.dimensions.depth}`}
                       </p>
@@ -84,7 +100,14 @@ const ProductDetail = () => {
                       <button className='btn btn-primary mx-3'>
                         {product.price} $
                       </button>
-                      <button className='btn btn-warning'>Add To Cart</button>
+                      <button
+                        className='btn btn-warning'
+                        onClick={() => {
+                          handleAddToCart(product)
+                        }}
+                      >
+                        Add To Cart
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -92,7 +115,24 @@ const ProductDetail = () => {
             </div>
           </>
         ) : (
-          <p>No product found</p>
+          <div
+            style={{
+              display: 'flex',
+              height: '100vh',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <div className='spinner-grow text-primary' role='status'>
+              <span className='visually-hidden'>Loading...</span>
+            </div>
+            <div className='spinner-grow text-warning' role='status'>
+              <span className='visually-hidden'>Loading...</span>
+            </div>
+            <div className='spinner-grow text-success' role='status'>
+              <span className='visually-hidden'>Loading...</span>
+            </div>
+          </div>
         )}
         <div
           style={{
@@ -102,17 +142,22 @@ const ProductDetail = () => {
             margin: 'auto',
           }}
         />
-        <h5 style={{ marginBlock: '20px' }}>Top Reviews</h5>
+
+        {/* Customer review section */}
+        <h5 style={{ marginBlock: '30px' }}>Top Reviews</h5>
 
         {product ? (
           <div
+            key={product.id}
             style={{
               backgroundColor: 'rgba(33, 37, 41)',
               borderRadius: '10px',
+              marginBlock: '2rem',
             }}
           >
-            {product.reviews.map((review) => (
+            {product.reviews.map((review, index) => (
               <CustomerReview
+                id={index}
                 comment={review.comment}
                 name={review.reviewerName}
                 date={review.date}
@@ -121,7 +166,24 @@ const ProductDetail = () => {
             ))}
           </div>
         ) : (
-          'No Product found'
+          <div
+            style={{
+              display: 'flex',
+              height: '100vh',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <div className='spinner-grow text-primary' role='status'>
+              <span className='visually-hidden'>Loading...</span>
+            </div>
+            <div className='spinner-grow text-warning' role='status'>
+              <span className='visually-hidden'>Loading...</span>
+            </div>
+            <div className='spinner-grow text-success' role='status'>
+              <span className='visually-hidden'>Loading...</span>
+            </div>
+          </div>
         )}
       </div>
     </>

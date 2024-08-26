@@ -1,8 +1,11 @@
 import userImg from '../images/userImage.png'
 
-const CustomerReview = ({ comment, name, date, rating }) => {
+const CustomerReview = ({ comment, name, date, rating, id }) => {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column' }}>
+    <div
+      key={id}
+      style={{ display: 'flex', flexDirection: 'column', padding: '1rem' }}
+    >
       <div style={{ display: 'flex' }}>
         <img
           src={userImg}
@@ -16,7 +19,24 @@ const CustomerReview = ({ comment, name, date, rating }) => {
         />
         <p>{name}</p>
       </div>
-      <p>Reviewed At - {date.toString().slice(0, 10)}</p>
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+        }}
+      >
+        <p>Reviewed At - {date.toString().slice(0, 10)}</p>
+        <p
+          style={{
+            marginLeft: '40px',
+            fontWeight: '700',
+            color: 'rgb(13, 110, 253)',
+            fontSize: '1.05rem',
+          }}
+        >
+          {comment}
+        </p>
+      </div>
     </div>
   )
 }
