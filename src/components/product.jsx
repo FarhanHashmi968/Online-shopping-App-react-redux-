@@ -1,5 +1,4 @@
 import { useDispatch, useSelector } from 'react-redux'
-// import { Products } from '../data'
 import { addtoCart, getData } from '../redux/cartSlice/cartSlice'
 import { ToastContainer, toast, Bounce } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -14,7 +13,7 @@ const Product = () => {
 
   useEffect(() => {
     dispatch(getData())
-  }, [])
+  }, [dispatch])
 
   const handleAddToCart = (item) => {
     dispatch(addtoCart(item))
@@ -31,17 +30,9 @@ const Product = () => {
     })
   }
 
-  // Spinner loading code when code is fetching data----
   if (isLoading) {
     return (
-      <div
-        style={{
-          display: 'flex',
-          height: '100vh',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
+      <div className='d-flex justify-content-center align-items-center vh-100'>
         <div className='spinner-grow text-primary' role='status'>
           <span className='visually-hidden'>Loading...</span>
         </div>
@@ -56,61 +47,62 @@ const Product = () => {
   }
 
   return (
-    <div className='d-flex justify-content-center'>
+    <div className='container-fluid my-5'>
       <ToastContainer />
-      <div className='container'>
-        <div className='row'>
-          {data.map((item) => (
+      <div className='row'>
+        {data.map((item) => (
+          <div
+            className='col-12 col-sm-6 col-md-4 col-lg-3 mb-4 d-flex justify-content-center'
+            key={item.id}
+          >
             <div
-              className='container col-md-4 my-5 d-flex justify-content-center '
-              key={item.id}
+              className='card bg-dark text-light productCard'
+              style={{ width: '100%', maxWidth: '18rem' }}
             >
-              <div
-                className='card bg-dark productCard'
-                style={{ width: '18rem' }}
+              <Link
+                to={`/productdetail/${item.id}`}
+                className='text-decoration-none'
               >
-                <Link
-                  to={`/productdetail/${item.id}`}
-                  style={{ textDecoration: 'none' }}
-                >
-                  <div className='p-3 d-flex justify-content-center align-items-center'>
-                    <img
-                      src={item.thumbnail}
-                      className='card-img-top'
-                      alt='...'
-                      style={{
-                        width: '200px',
-                        height: '200px',
-                        borderRadius: '10px',
-                      }}
-                    />
-                  </div>
-                </Link>
-                <div className='card-body text-light text-center'>
-                  <h5 className='card-title'>{item.title}</h5>
-                  <p className='card-text'>
-                    {item.description.length > 10
-                      ? `${item.description.slice(0, 100)}...`
-                      : item.description}
-                  </p>
-                  <button className='btn btn-primary mx-3 my-2'>
+                <div className='p-3 d-flex justify-content-center'>
+                  <img
+                    src={item.thumbnail}
+                    className='card-img-top img-fluid'
+                    alt={item.title}
+                    style={{
+                      width: '100%',
+                      height: 'auto',
+                      maxHeight: '200px',
+                      objectFit: 'cover',
+                      borderRadius: '10px',
+                    }}
+                  />
+                </div>
+              </Link>
+              <div className='card-body text-center'>
+                <h5 className='card-title'>{item.title}</h5>
+                <p className='card-text'>
+                  {item.description.length > 100
+                    ? `${item.description.slice(0, 100)}...`
+                    : item.description}
+                </p>
+                <div className='d-flex justify-content-center'>
+                  <button className='btn btn-primary me-2'>
                     {item.price} $
                   </button>
                   <button
                     className='btn btn-warning'
-                    onClick={() => {
-                      handleAddToCart(item)
-                    }}
+                    onClick={() => handleAddToCart(item)}
                   >
                     Add to Cart
                   </button>
                 </div>
               </div>
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
     </div>
   )
 }
+
 export default Product

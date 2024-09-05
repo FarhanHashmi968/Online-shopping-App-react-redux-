@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import CustomerReview from './CustomerReview'
 import { addtoCart, getData } from '../redux/cartSlice/cartSlice'
 import { ToastContainer, toast, Bounce } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 const ProductDetail = () => {
   const [product, setProduct] = useState(null)
@@ -44,85 +45,52 @@ const ProductDetail = () => {
 
   return (
     <>
-      <div className='container text-center productDescriptionContainer'>
+      <div className='container-fluid px-3'>
         <ToastContainer />
         {product ? (
-          <>
-            {/* Product Details */}
-            <div key={product.id} className='container my-5'>
-              <div className='card mb-3 bg-dark text-center text-light'>
-                <div className='row g-0'>
-                  <div className='col-md-4'>
-                    <div className='p-0'>
-                      <img
-                        src={product.thumbnail}
-                        className='img-fluid rounded-start'
-                        alt={product.title}
-                        style={{
-                          borderRadius: '10px',
-                          height: '25rem',
-                        }}
-                      />
-                    </div>
-                  </div>
-                  <div className='col-md-8'>
-                    <div className='card-body'>
-                      <h2
-                        style={{ marginBottom: '1.5rem' }}
-                        className='card-title'
-                      >
-                        {product.title}
-                      </h2>
-                      <p style={{ fontWeight: '700', color: '#0d6efd' }}>
-                        {product.brand ? `Brand - ${product.brand}` : ''}
-                      </p>
-
-                      <p>Discount Offer - {product.discountPercentage}%</p>
-                      <p>Rating - {product.rating}</p>
-                      <p>
-                        {product.availabilityStatus} - {product.stock}
-                      </p>
-                      <p>{product.shippingInformation}</p>
-                      <p>{product.returnPolicy}</p>
-                      <p>
-                        Size -{' '}
-                        {`${product.dimensions.width} * ${product.dimensions.height} * ${product.dimensions.depth}`}
-                      </p>
-                      <p
-                        className='card-text'
-                        style={{
-                          fontWeight: '700',
-                          color: '#rgb(227 255 163)',
-                        }}
-                      >
-                        {product.description}
-                      </p>
-                      <button className='btn btn-primary mx-3'>
-                        {product.price} $
-                      </button>
-                      <button
-                        className='btn btn-warning'
-                        onClick={() => {
-                          handleAddToCart(product)
-                        }}
-                      >
-                        Add To Cart
-                      </button>
-                    </div>
-                  </div>
+          <div className='row my-5'>
+            <div className='col-12 col-md-6 col-lg-4 mb-4'>
+              <img
+                src={product.thumbnail}
+                className='img-fluid rounded'
+                alt={product.title}
+                style={{ maxHeight: '300px', objectFit: 'cover' }}
+              />
+            </div>
+            <div className='col-12 col-md-6 col-lg-8'>
+              <div className='d-flex flex-column h-100'>
+                <h2 className='mb-4'>{product.title}</h2>
+                <p className='fw-bold text-primary'>
+                  {product.brand ? `Brand - ${product.brand}` : ''}
+                </p>
+                <p>Discount Offer - {product.discountPercentage}%</p>
+                <p>Rating - {product.rating}</p>
+                <p>
+                  {product.availabilityStatus} - {product.stock}
+                </p>
+                <p>{product.shippingInformation}</p>
+                <p>{product.returnPolicy}</p>
+                <p>
+                  Size -{' '}
+                  {`${product.dimensions.width} * ${product.dimensions.height} * ${product.dimensions.depth}`}
+                </p>
+                <p className='fw-bold text-warning'>{product.description}</p>
+                <div className='mt-auto'>
+                  <button className='btn btn-primary me-2'>
+                    {product.price} $
+                  </button>
+                  <button
+                    className='btn btn-warning'
+                    onClick={() => handleAddToCart(product)}
+                  >
+                    Add To Cart
+                  </button>
                 </div>
               </div>
             </div>
-          </>
+          </div>
         ) : (
-          <div
-            style={{
-              display: 'flex',
-              height: '100vh',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
+          <div className='d-flex justify-content-center align-items-center vh-100'>
             <div className='spinner-grow text-primary' role='status'>
               <span className='visually-hidden'>Loading...</span>
             </div>
@@ -134,30 +102,15 @@ const ProductDetail = () => {
             </div>
           </div>
         )}
-        <div
-          style={{
-            height: '2px',
-            backgroundColor: 'white',
-            width: '100%',
-            margin: 'auto',
-          }}
-        />
-
-        {/* Customer review section */}
-        <h5 style={{ marginBlock: '30px' }}>Top Reviews</h5>
-
+        <div className='my-4'>
+          <hr style={{ borderColor: '#fff' }} />
+        </div>
+        <h5 className='my-4'>Top Reviews</h5>
         {product ? (
-          <div
-            key={product.id}
-            style={{
-              backgroundColor: 'rgba(33, 37, 41)',
-              borderRadius: '10px',
-              marginBlock: '2rem',
-            }}
-          >
+          <div className='bg-dark text-light rounded p-3'>
             {product.reviews.map((review, index) => (
               <CustomerReview
-                id={index}
+                key={index}
                 comment={review.comment}
                 name={review.reviewerName}
                 date={review.date}
@@ -166,14 +119,7 @@ const ProductDetail = () => {
             ))}
           </div>
         ) : (
-          <div
-            style={{
-              display: 'flex',
-              height: '100vh',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
+          <div className='d-flex justify-content-center align-items-center vh-100'>
             <div className='spinner-grow text-primary' role='status'>
               <span className='visually-hidden'>Loading...</span>
             </div>
